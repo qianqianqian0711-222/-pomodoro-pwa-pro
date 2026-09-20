@@ -1,1 +1,126 @@
-<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#ff6b5f"><title>番茄专注 Pro V3</title><link rel="manifest" href="manifest.json"><link rel="stylesheet" href="css/main.css"></head><body><main class="app"><header><div><small>POMODORO PRO</small><h1>早上好 👋</h1><p>专注当下，遇见更好的自己</p></div><div class="avatar">🍅</div></header><section class="card goal"><span>今日专注目标</span><b><span id="goalDone">0</span> / 8 🍅</b><div class="progress"><i id="goalBar"></i></div></section><section class="card focus"><div class="tomato">🍅</div><div class="ring"><span id="timer">25:00</span></div><button id="startBtn" onclick="startTimer()">▶ 开始专注</button><button class="ghost" onclick="resetTimer()">重置</button></section><section class="card"><h2>今日数据</h2><div class="stats"><div><b id="count">0</b><small>番茄</small></div><div><b id="minutes">0</b><small>分钟</small></div><div><b>1</b><small>连续天</small></div></div></section><section class="card"><h2>快捷入口</h2><div class="shortcuts"><a href="pages/tasks.html">📚<span>任务</span></a><a href="pages/ai.html">🤖<span>AI计划</span></a><a href="pages/stats.html">📊<span>统计</span></a><a href="pages/profile.html">👤<span>我的</span></a></div></section><nav><a href="index.html">⌂<span>首页</span></a><a href="pages/focus.html">🍅<span>专注</span></a><a href="pages/tasks.html">✓<span>任务</span></a><a href="pages/stats.html">◷<span>统计</span></a><a href="pages/ai.html">✦<span>AI</span></a></nav></main><script src="js/timer.js"></script><script>if('serviceWorker'in navigator)navigator.serviceWorker.register('service-worker.js')</script></body></html>
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+  <meta name="theme-color" content="#ff6b62">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="番茄专注 Pro">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="assets/icon.svg">
+  <title>番茄专注 Pro</title>
+  <link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div>
+        <div class="eyebrow">POMODORO PRO</div>
+        <h1 id="greeting">早上好 👋</h1>
+        <p>专注当下，遇见更好的自己</p>
+      </div>
+      <button class="tomato-badge" id="quickFocus" aria-label="开始专注">🍅</button>
+    </header>
+
+    <main class="content">
+      <section class="goal-card card">
+        <div class="row-between">
+          <span>今日专注目标</span>
+          <strong><span id="goalCount">0</span> / 8 🍅</strong>
+        </div>
+        <div class="progress-track"><div id="goalProgress" class="progress-fill"></div></div>
+      </section>
+
+      <section id="homePanel" class="screen active">
+        <section class="timer-card card">
+          <div class="timer-label" id="modeLabel">专注时间</div>
+          <div class="timer-ring" id="timerRing">
+            <div class="ring-inner">
+              <div class="tomato-large">🍅</div>
+              <div class="time" id="time">25:00</div>
+              <div class="timer-state" id="timerState">准备开始</div>
+            </div>
+          </div>
+          <div class="timer-actions">
+            <button class="btn btn-primary" id="startBtn">▶ 开始专注</button>
+            <button class="btn btn-light" id="resetBtn">重置</button>
+          </div>
+          <div class="cycle-note">专注 25 分钟 · 休息 5 分钟 · 每 4 轮长休息</div>
+        </section>
+
+        <section class="stats-card card">
+          <div class="section-title">今日数据</div>
+          <div class="mini-stats">
+            <div><strong id="statTomatoes">0</strong><span>番茄</span></div>
+            <div><strong id="statMinutes">0</strong><span>分钟</span></div>
+            <div><strong id="statStreak">1</strong><span>连续天</span></div>
+          </div>
+        </section>
+
+        <section class="shortcuts card">
+          <div class="section-title">快捷入口</div>
+          <div class="shortcut-grid">
+            <button data-tab="tasks"><span>📚</span><small>任务</small></button>
+            <button data-tab="ai"><span>🤖</span><small>AI计划</small></button>
+            <button data-tab="stats"><span>📊</span><small>统计</small></button>
+            <button data-tab="profile"><span>👤</span><small>我的</small></button>
+          </div>
+        </section>
+      </section>
+
+      <section id="tasksPanel" class="screen">
+        <div class="page-head"><div><div class="eyebrow">TASKS</div><h2>今日任务</h2></div><button class="icon-btn" id="addTaskBtn">＋</button></div>
+        <div class="card task-composer" id="taskComposer">
+          <input id="taskInput" maxlength="60" placeholder="例如：完成英语阅读练习">
+          <button class="btn btn-primary" id="saveTaskBtn">添加</button>
+        </div>
+        <div id="taskList" class="task-list"></div>
+      </section>
+
+      <section id="aiPanel" class="screen">
+        <div class="page-head"><div><div class="eyebrow">AI PLANNER</div><h2>AI学习计划</h2></div><span class="ai-pill">本地智能版</span></div>
+        <div class="card form-card">
+          <label>学习目标</label>
+          <textarea id="aiGoal" rows="3" placeholder="例如：30天准备雅思，重点提升阅读和写作"></textarea>
+          <div class="form-row">
+            <label>每天可学习 <input id="aiHours" type="number" min="1" max="12" value="3"> 小时</label>
+            <label>当前水平
+              <select id="aiLevel"><option>基础</option><option selected>中等</option><option>进阶</option></select>
+            </label>
+          </div>
+          <button class="btn btn-primary full" id="generatePlan">生成今日计划</button>
+        </div>
+        <div id="planResult" class="plan-result"></div>
+      </section>
+
+      <section id="statsPanel" class="screen">
+        <div class="page-head"><div><div class="eyebrow">STATISTICS</div><h2>专注统计</h2></div></div>
+        <div class="card big-stat"><span>累计专注</span><strong id="totalMinutes">0</strong><small>分钟</small></div>
+        <div class="card chart-card"><div class="section-title">近 7 天</div><div id="chart" class="bar-chart"></div></div>
+        <div class="card insight"><span>💡</span><div><strong>专注建议</strong><p id="insightText">完成第一个番茄后，你会更容易进入状态。</p></div></div>
+      </section>
+
+      <section id="profilePanel" class="screen">
+        <div class="page-head"><div><div class="eyebrow">PROFILE</div><h2>我的</h2></div></div>
+        <div class="profile-card card"><div class="avatar">🍅</div><div><strong>专注者</strong><p>坚持每天专注一点点</p></div></div>
+        <div class="settings card">
+          <button id="notifyBtn"><span>🔔</span><span>完成提醒</span><b id="notifyStatus">关闭</b></button>
+          <button id="installBtn"><span>📱</span><span>安装到手机桌面</span><b>›</b></button>
+          <button id="exportBtn"><span>📦</span><span>导出数据</span><b>›</b></button>
+          <button id="clearBtn" class="danger"><span>🗑️</span><span>清除本地数据</span><b>›</b></button>
+        </div>
+      </section>
+    </main>
+
+    <nav class="bottom-nav" aria-label="主导航">
+      <button class="nav-item active" data-tab="home"><span>⌂</span><small>首页</small></button>
+      <button class="nav-item" data-tab="focus"><span>🍅</span><small>专注</small></button>
+      <button class="nav-item" data-tab="tasks"><span>✓</span><small>任务</small></button>
+      <button class="nav-item" data-tab="stats"><span>◷</span><small>统计</small></button>
+      <button class="nav-item" data-tab="ai"><span>✦</span><small>AI</small></button>
+    </nav>
+  </div>
+  <script src="js/app.js"></script>
+</body>
+</html>

@@ -1,4 +1,13 @@
-# 番茄专注 Pro V4｜真正手机 App 布局
-直接把本文件夹内容上传到 GitHub Pages。
-特点：100% 移动端宽度、自适应安全区、dvh、PWA standalone、底部 App 导航、可用计时器、任务、统计、AI 本地计划、数据导出。
-注意：AI 目前为本地规则生成，不调用外部 AI API；如接真实 AI，需要后端代理，不能把 API Key 直接放前端。
+# 番茄专注 Pro — Magic8 Android APK 项目
+
+这是当前 Magic8 V6 网页版的 Android WebView 封装项目。
+
+## 在 Android Studio 生成 APK
+1. 用 Android Studio 打开本目录。
+2. 等待 Gradle 同步。
+3. Build → Build Bundle(s) / APK(s) → Build APK(s)。
+4. APK 输出：app/build/outputs/apk/debug/app-debug.apk
+
+目标：Android 6.0+，竖屏，targetSdk 35。针对荣耀 Magic8 的 100dvh / safe-area 手机布局已保留。
+
+注意：当前环境没有 Android SDK/Gradle，因此这里不能可靠地伪造一个可安装 APK。该目录是可直接导入 Android Studio 的完整工程。

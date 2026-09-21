@@ -1,0 +1,5 @@
+let sec=1500,running=false,timer=null,tom=+(localStorage.pomTom||0),mins=+(localStorage.pomMin||0);
+const q=s=>document.querySelector(s);
+function render(){q('#time').textContent=String(Math.floor(sec/60)).padStart(2,'0')+':'+String(sec%60).padStart(2,'0');let p=(1500-sec)/1500;q('#dial').style.background=`conic-gradient(#ff6b62 ${p*360}deg,#f3e1dc ${p*360}deg)`;q('#start').textContent=running?'Ⅱ 暂停':'▶ 开始专注';q('#state').textContent=running?'专注进行中':'准备开始';q('#tomatoes').textContent=tom;q('#minutes').textContent=mins;q('#count').textContent=Math.min(tom,8);q('#progress').style.width=Math.min(tom/8*100,100)+'%'}
+q('#start').onclick=()=>{running=!running;clearInterval(timer);if(running)timer=setInterval(()=>{--sec;if(sec<=0){clearInterval(timer);running=false;tom++;mins+=25;localStorage.pomTom=tom;localStorage.pomMin=mins;sec=1500;alert('🍅 专注完成！休息一下吧')}render()},1000);render()};
+q('#reset').onclick=()=>{clearInterval(timer);running=false;sec=1500;render()};render();
